@@ -1,0 +1,81 @@
+Чеклист перед загрузкой в Яндекс Игры
+
+Архив для загрузки:
+- WhatCameBefore-yandex.zip
+
+Файлы, которые должны быть в архиве:
+- index.html
+- styles.css
+- game.js
+- assets/background.mp3
+
+Файлы, которые не должны быть в архиве:
+- .git/
+- .agents/
+- AGENTS.md
+- README.md
+- server.js
+- yandex_publish/
+- локальные временные файлы и черновики
+
+Промоматериалы для консоли Яндекс Игр:
+- yandex_publish/description_ru.txt
+- yandex_publish/icons/icon_1024.png
+- yandex_publish/icons/icon_512.png
+- yandex_publish/icons/icon_256.png
+- yandex_publish/icons/icon_128.png
+- yandex_publish/icons/icon_light_1024.png
+- yandex_publish/icons/icon_light_512.png
+- yandex_publish/icons/icon_light_256.png
+- yandex_publish/icons/icon_light_128.png
+- yandex_publish/icons/icon_modern_128.png
+- yandex_publish/screenshots/screenshot_01_home_1280x720.png
+- yandex_publish/screenshots/screenshot_02_question_1280x720.png
+- yandex_publish/screenshots/screenshot_03_career_1280x720.png
+- yandex_publish/screenshots/screenshot_04_themes_1280x720.png
+- yandex_publish/screenshots/screenshot_05_blitz_1280x720.png
+- yandex_publish/screenshots/screenshot_06_daily_1280x720.png
+- yandex_publish/screenshots/screenshot_07_endless_1280x720.png
+- yandex_publish/screenshots/screenshot_08_leaderboard_1280x720.png
+- yandex_publish/screenshots/screenshot_mobile_01_home_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_02_question_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_03_career_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_04_themes_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_05_blitz_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_06_daily_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_07_endless_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_08_leaderboard_720x1280.png
+- yandex_publish/screenshots/screenshot_mobile_09_result_720x1280.png
+
+Технические проверки:
+- `node --check game.js` проходит без ошибок.
+- `node server.js` запускает игру на `http://127.0.0.1:4174/`.
+- Главная страница локально возвращает HTTP 200.
+- `/sdk.js` локально возвращает HTTP 200 как безопасная заглушка.
+- `assets/background.mp3` локально отдается с `Content-Type: audio/mpeg`.
+- `index.html` подключает `/sdk.js`.
+- Игра запускается локально без реального SDK.
+- `LoadingAPI.ready()` вызывается после готовности игры.
+- Сохранения используют `player.setData`, но сохраняют fallback на `localStorage`.
+- Лидерборд использует техническое имя `bestScore`.
+- Реклама вызывается только через SDK.
+- Музыка останавливается на рекламе, при сворачивании страницы и потере фокуса.
+- Управление музыкой и звуковыми эффектами остается раздельным.
+
+Игровые проверки:
+- Доступны режимы `Карьера`, `По темам`, `Блиц`, `Ежедневный вызов`, `Бесконечный`, `Рейтинг`.
+- База вопросов не меньше 1000.
+- Вопросы имеют формат `{ a, b, ya, yb, theme, fact }`.
+- Правильный ответ не закреплен постоянно за одной колонкой.
+- Карьерные уровни используют непересекающиеся наборы вопросов.
+- Сброс прогресса работает и не ломает дальнейшее сохранение.
+- На мобильном экране результата между кнопками есть внешний вертикальный отступ.
+
+Проверки публикации:
+- В архиве нет файлов с пробелами или русскими символами в именах.
+- Размер распакованных игровых файлов заметно меньше лимита Яндекс Игр.
+- Описание для консоли взято из `yandex_publish/description_ru.txt`.
+- В консоли создан лидерборд с техническим именем `bestScore`.
+- Возрастной рейтинг, жанр, теги, устройства и ориентация заполнены вручную.
+- Иконки и скриншоты загружены из папки `yandex_publish/`.
+- Монетизация РСЯ настроена вручную, если планируется реклама.

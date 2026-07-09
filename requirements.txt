@@ -1,0 +1,5 @@
+# This project has no Python package requirements.
+# It is a static HTML5 game served by Node.js with built-in modules only.
+#
+# Runtime requirement:
+# - Node.js 18+ for running server.js

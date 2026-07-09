@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e1018">
+  <title>Хронодуэль: Что раньше?</title>
+  <link id="favicon" rel="icon" type="image/png" href="yandex_publish/icons/icon_light_128.png">
+  <link rel="icon" type="image/png" href="yandex_publish/icons/icon_modern_128.png" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/sdk.js"></script>
+</head>
+<body>
+  <audio id="bgMusic" src="assets/background.mp3" preload="auto" autoplay loop></audio>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="top-left-actions">
+        <button class="icon-btn" id="backBtn" aria-label="Назад" title="Назад">‹</button>
+        <button class="icon-btn reset-progress-btn" id="resetBtn" aria-label="Сбросить прогресс" title="Сбросить прогресс">
+          <span class="reset-full">Сбросить прогресс</span>
+          <span class="reset-short">Сброс</span>
+        </button>
+      </div>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <strong>Хронодуэль</strong>
+          <span>Что появилось раньше?</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="styleBtn" aria-label="Стиль" title="Стиль">◐</button>
+        <button class="icon-btn" id="musicBtn" aria-label="Музыка" title="Музыка">♫</button>
+        <button class="icon-btn" id="sfxBtn" aria-label="Звуки" title="Звуки">♪</button>
+      </div>
+    </header>
+
+    <main id="screen" class="screen"></main>
+  </div>
+
+  <template id="homeTemplate">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Викторина на чувство времени</p>
+        <h1>Хронодуэль</h1>
+        <p>Выбирай, что появилось раньше, собирай серии, открывай эпохи и поднимайся в рейтинге.</p>
+      </div>
+      <div class="hero-timeline" aria-hidden="true">
+        <span>1876</span>
+        <span>1969</span>
+        <span>1984</span>
+        <span>2007</span>
+        <span>2016</span>
+        <span>2020</span>
+      </div>
+    </section>
+
+    <section class="stat-grid">
+      <div><strong data-stat="level">1</strong><span>уровень</span></div>
+      <div><strong data-stat="best">0</strong><span>лучшая серия</span></div>
+    </section>
+
+    <section class="mode-grid">
+      <button class="mode-card primary" data-mode="career">
+        <span>Карьера</span>
+        <strong>Путь хронолога</strong>
+        <em>Уровни, факты, рост сложности</em>
+      </button>
+      <button class="mode-card" data-mode="themes">
+        <span>По темам</span>
+        <strong>Выбор категории</strong>
+        <em>Игры, кино, техника, история</em>
+      </button>
+      <button class="mode-card" data-mode="sprint">
+        <span>Блиц</span>
+        <strong>90 секунд</strong>
+        <em>Максимум очков за серию</em>
+      </button>
+      <button class="mode-card" data-mode="daily">
+        <span>Ежедневный вызов</span>
+        <strong>10 вопросов дня</strong>
+        <em>Одна попытка, высокий множитель</em>
+      </button>
+      <button class="mode-card" data-mode="endless">
+        <span>Бесконечный</span>
+        <strong>Без лимита ошибок</strong>
+        <em>Отвечай, пока сам не выйдешь из раздела</em>
+      </button>
+      <button class="mode-card" data-mode="leaderboard">
+        <span>Рейтинг</span>
+        <strong>Таблица лидеров</strong>
+        <em>Лучший счет и серия</em>
+      </button>
+    </section>
+  </template>
+
+  <script src="game.js"></script>
+</body>
+</html>
