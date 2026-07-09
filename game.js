@@ -398,6 +398,7 @@ async function init() {
   if (state.data.musicOn) startMusic();
   else stopMusic();
   yandexReady();
+  showInterstitial();
 }
 
 function bindGlobal() {
@@ -479,7 +480,9 @@ function renderHome() {
     endlessCard.querySelector('strong').textContent = 'Без лимита ошибок';
     endlessCard.querySelector('em').textContent = 'Отвечай, пока сам не выйдешь из раздела';
   }
-  screen.querySelectorAll('[data-mode]').forEach(btn => btn.addEventListener('click', () => openMode(btn.dataset.mode)));
+  screen.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => runAfterInterstitial(() => openMode(btn.dataset.mode)));
+  });
   backBtn.style.visibility = 'hidden';
   updateAudioButtons();
   applyStyle();
@@ -490,20 +493,22 @@ function resetProgress() {
   if (!firstConfirm) return;
   const secondConfirm = confirm('Подтвердите сброс еще раз. Это действие нельзя отменить.');
   if (!secondConfirm) return;
-  state.data = {
-    ...state.data,
-    level: 1,
-    stars: 0,
-    bestStreak: 0,
-    bestScore: 0,
-    usedCareerQuestionIds: [],
-    seenFacts: {},
-    dailyDate: '',
-    dailyDone: false
-  };
-  save();
-  showToast('Прогресс сброшен');
-  renderHome();
+  runAfterInterstitial(() => {
+    state.data = {
+      ...state.data,
+      level: 1,
+      stars: 0,
+      bestStreak: 0,
+      bestScore: 0,
+      usedCareerQuestionIds: [],
+      seenFacts: {},
+      dailyDate: '',
+      dailyDone: false
+    };
+    save();
+    showToast('Прогресс сброшен');
+    renderHome();
+  });
 }
 
 function openMode(mode) {
@@ -538,7 +543,7 @@ function renderCareerMap() {
     </section>
     <section class="career-map">${nodes}</section>`;
   screen.querySelectorAll('[data-level]:not(:disabled)').forEach(btn => {
-    btn.addEventListener('click', () => startGame('career', null, Number(btn.dataset.level)));
+    btn.addEventListener('click', () => runAfterInterstitial(() => startGame('career', null, Number(btn.dataset.level))));
   });
 }
 
@@ -551,8 +556,8 @@ function renderDailyLocked() {
       <button class="action-btn gold" data-sprint>Играть блиц</button>
       <button class="action-btn" data-home>На главный экран</button>
     </section>`;
-  screen.querySelector('[data-sprint]').addEventListener('click', () => startGame('sprint'));
-  screen.querySelector('[data-home]').addEventListener('click', renderHome);
+  screen.querySelector('[data-sprint]').addEventListener('click', () => runAfterInterstitial(() => startGame('sprint')));
+  screen.querySelector('[data-home]').addEventListener('click', () => runAfterInterstitial(renderHome));
 }
 
 function renderThemes() {
@@ -562,7 +567,9 @@ function renderThemes() {
     return `<button class="theme-card" data-theme="${key}"><span>${count} вопросов</span><strong>${t[0]}</strong><em>${t[1]}</em></button>`;
   }).join('');
   screen.innerHTML = `<section class="theme-grid">${items}</section>`;
-  screen.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', () => startGame('theme', btn.dataset.theme)));
+  screen.querySelectorAll('[data-theme]').forEach(btn => {
+    btn.addEventListener('click', () => runAfterInterstitial(() => startGame('theme', btn.dataset.theme)));
+  });
 }
 
 async function renderLeaderboard() {
@@ -575,7 +582,7 @@ async function renderLeaderboard() {
     } catch {}
   }
   screen.innerHTML = `<section class="leader-box"><h2>Рейтинг</h2><p>${text}</p><button class="action-btn gold" data-home>На главный экран</button></section>`;
-  screen.querySelector('[data-home]').addEventListener('click', renderHome);
+  screen.querySelector('[data-home]').addEventListener('click', () => runAfterInterstitial(renderHome));
 }
 
 function startGame(mode, theme = null, careerLevel = state.data.level) {
@@ -821,10 +828,12 @@ function finishGame(completed) {
       <button class="action-btn" data-home>На главный экран</button>
     </section>`;
   screen.querySelector('[data-next]').addEventListener('click', () => {
-    if (result.nextMode === 'careerMap') return renderCareerMap();
-    startGame(result.nextMode || state.mode, result.nextMode ? null : state.theme, state.careerLevel);
+    runAfterInterstitial(() => {
+      if (result.nextMode === 'careerMap') return renderCareerMap();
+      startGame(result.nextMode || state.mode, result.nextMode ? null : state.theme, state.careerLevel);
+    });
   });
-  screen.querySelector('[data-home]').addEventListener('click', renderHome);
+  screen.querySelector('[data-home]').addEventListener('click', () => runAfterInterstitial(renderHome));
 }
 
 function resultContent(completed) {
@@ -911,16 +920,30 @@ function maybeInterstitial() {
   if (state.sessionAnswers % 5 === 0) showInterstitial();
 }
 
-function showInterstitial() {
+function runAfterInterstitial(action) {
+  showInterstitial(action);
+}
+
+function showInterstitial(onDone) {
+  let finished = false;
+  const done = () => {
+    if (finished) return;
+    finished = true;
+    resumeAudioAfterSystem();
+    if (typeof onDone === 'function') onDone();
+  };
   try {
-    state.sdk?.adv?.showFullscreenAdv({
+    if (!state.sdk?.adv?.showFullscreenAdv) return done();
+    state.sdk.adv.showFullscreenAdv({
       callbacks: {
         onOpen: pauseAudioForSystem,
-        onClose: resumeAudioAfterSystem,
-        onError: resumeAudioAfterSystem
+        onClose: done,
+        onError: done
       }
     });
-  } catch {}
+  } catch {
+    done();
+  }
 }
 
 function showRewarded(onReward) {

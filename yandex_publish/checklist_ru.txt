@@ -8,6 +8,8 @@
 - styles.css
 - game.js
 - assets/background.mp3
+- yandex_publish/icons/icon_light_128.png
+- yandex_publish/icons/icon_modern_128.png
 
 Файлы, которые не должны быть в архиве:
 - .git/
@@ -15,11 +17,16 @@
 - AGENTS.md
 - README.md
 - server.js
-- yandex_publish/
+- yandex_publish/screenshots/
+- yandex_publish/description_ru.txt
+- yandex_publish/checklist_ru.txt
+- yandex_publish/cover_800x470.png
+- иконки из yandex_publish/icons/, которые не используются игрой во время запуска
 - локальные временные файлы и черновики
 
 Промоматериалы для консоли Яндекс Игр:
 - yandex_publish/description_ru.txt
+- yandex_publish/cover_800x470.png
 - yandex_publish/icons/icon_1024.png
 - yandex_publish/icons/icon_512.png
 - yandex_publish/icons/icon_256.png
