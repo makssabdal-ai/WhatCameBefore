@@ -929,7 +929,7 @@ function showInterstitial(onDone) {
   const done = () => {
     if (finished) return;
     finished = true;
-    resumeAudioAfterSystem();
+    resumeAudioAfterAd();
     if (typeof onDone === 'function') onDone();
   };
   try {
@@ -954,11 +954,11 @@ function showRewarded(onReward) {
         onRewarded: () => { rewarded = true; onReward(); },
         onOpen: pauseAudioForSystem,
         onClose: () => {
-          resumeAudioAfterSystem();
+          resumeAudioAfterAd();
           if (!rewarded) showToast('Награда не получена');
         },
         onError: () => {
-          resumeAudioAfterSystem();
+          resumeAudioAfterAd();
           onReward();
         }
       }
@@ -1035,6 +1035,11 @@ function pauseAudioForSystem() {
 
 function resumeAudioAfterSystem() {
   if (state.data.musicOn && state.musicPausedBySystem) startMusic();
+  state.musicPausedBySystem = false;
+}
+
+function resumeAudioAfterAd() {
+  if (state.data.musicOn) startMusic();
   state.musicPausedBySystem = false;
 }
 
