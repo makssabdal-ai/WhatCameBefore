@@ -7,9 +7,10 @@
 - index.html
 - styles.css
 - game.js
+- favicon.png
 - assets/background.mp3
-- yandex_publish/icons/icon_light_128.png
-- yandex_publish/icons/icon_modern_128.png
+- assets/icon_light_128.png
+- assets/icon_modern_128.png
 
 Файлы, которые не должны быть в архиве:
 - .git/
@@ -21,7 +22,7 @@
 - yandex_publish/description_ru.txt
 - yandex_publish/checklist_ru.txt
 - yandex_publish/cover_800x470.png
-- иконки из yandex_publish/icons/, которые не используются игрой во время запуска
+- yandex_publish/
 - локальные временные файлы и черновики
 
 Промоматериалы для консоли Яндекс Игр:

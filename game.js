@@ -991,8 +991,8 @@ function applyStyle() {
   document.body.classList.toggle('modern', isModern);
   if (favicon) {
     favicon.href = isModern
-      ? 'yandex_publish/icons/icon_modern_128.png'
-      : 'yandex_publish/icons/icon_light_128.png';
+      ? 'assets/icon_modern_128.png'
+      : 'favicon.png';
   }
   styleBtn.textContent = isModern ? '◑' : '◐';
   styleBtn.title = isModern ? 'Современный стиль' : 'Премиальный стиль';
